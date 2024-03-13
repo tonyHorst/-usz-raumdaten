@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="space_storey_Flow" doc:id="ab4d2d8f-7aa9-47fe-b586-ff80d79f2961" >
+		<ee:transform doc:name="Build request data" doc:id="f6813d6b-7f55-4fe5-9140-7b78f066b289" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="httpRequestVariable" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"method": "GET",
+	"path": "/spaces",
+	"headers": {
+	},
+	"queryParams":{
+		"storeyId": vars.id as String default ""
+	},
+	"uriParams":{
+	}
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<http:request method="#[vars.httpRequestVariables.method]" doc:name="Request system api" doc:id="5adacc6d-78d6-48e9-857a-dbe42a34e0d2" config-ref="Raum_System" path="#[vars.httpRequestVariables.path]" target="spaceStoreyResult" >
+			<http:headers ><![CDATA[#[vars.httpRequestVariables.headers]]]></http:headers>
+			<http:uri-params ><![CDATA[#[vars.httpRequestVariables.uriParams]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[vars.httpRequestVariables.queryParams]]]></http:query-params>
+		</http:request>
+	</sub-flow>
+</mule>
