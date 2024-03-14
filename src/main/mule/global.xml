@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
-http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
-	<http:request-config name="Raum_System" doc:name="HTTP Request configuration" doc:id="2597f4c5-f315-409e-af70-f1267292e4ba" >
-		<http:request-connection protocol="HTTPS" host="raum.k8s.usz.ch" >
-			<tls:context >
-				<tls:trust-store insecure="true" />
-			</tls:context>
-		</http:request-connection>
-	</http:request-config>
-	<http:listener-config name="usz_raumdaten-httpListenerConfig">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+    <http:request-config name="Raum_System" doc:name="HTTP Request configuration" doc:id="2597f4c5-f315-409e-af70-f1267292e4ba">
+        <http:request-connection protocol="HTTPS" host="raum.k8s.usz.ch">
+            <tls:context>
+                <tls:trust-store insecure="true" />
+            </tls:context>
+        </http:request-connection>
+    </http:request-config>
+    <http:listener-config name="usz_raumdaten-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="usz_raumdaten-config" api="resource::2e4d6899-5dcc-4311-b52a-54749987e6ba:usz_raumdaten:1.0.3:oas:zip:usz_raumdaten.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="usz_raumdaten-config" api="resource::2e4d6899-5dcc-4311-b52a-54749987e6ba:usz_raumdaten:1.0.4:oas:zip:usz_raumdaten.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 </mule>

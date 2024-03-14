@@ -191,31 +191,30 @@ output application/json
     </flow>
     <flow name="get:\storeys\(id)\flaeche:usz_raumdaten-config">
         <logger level="INFO" message="get:\storeys\(id)\flaeche:usz_raumdaten-config" />
-		<ee:transform doc:name="Store request event path variables">
+        <ee:transform doc:name="Store request event path variables">
             <ee:variables>
                 <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<scatter-gather doc:name="Scatter-Gather" doc:id="ee124c1f-c7eb-4b78-bb48-25b5f4fbe1e6" >
-			<route >
-				<flow-ref doc:name="storey_data_request_Flow" doc:id="5e813b9d-423a-4787-93f8-d7dd6e33f6a2" name="storey_data_request_Flow" />
-			</route>
-			<route >
-				<flow-ref doc:name="space_storey_Flow" doc:id="7ee477b7-6f53-4af3-9ee5-dfe0f9ff7f7a" name="space_storey_Flow" />
-			</route>
-		</scatter-gather>
-		<foreach doc:name="For each space item" doc:id="03d60fe2-9ad8-474d-acee-a96780d1fa7c" collection="#[vars.spaceStoreyResult]">
-			<ee:transform doc:name="Calculate flaecheTotal" doc:id="5e24a107-3230-4232-9404-4f190e352e31">
-			<ee:message>
-			</ee:message>
-				<ee:variables >
-					<ee:set-variable variableName="space" ><![CDATA[vars.space as Number default 0 + payload.code as Number default 0]]></ee:set-variable>
-				</ee:variables>
-		</ee:transform>
-		</foreach>
-		<ee:transform doc:name="Build response" doc:id="cfd80721-b7d8-49fa-9106-aa6b23e81e8b" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+        <scatter-gather doc:name="Scatter-Gather" doc:id="ee124c1f-c7eb-4b78-bb48-25b5f4fbe1e6">
+            <route>
+                <flow-ref doc:name="storey_data_request_Flow" doc:id="5e813b9d-423a-4787-93f8-d7dd6e33f6a2" name="storey_data_request_Flow" />
+            </route>
+            <route>
+                <flow-ref doc:name="space_storey_Flow" doc:id="7ee477b7-6f53-4af3-9ee5-dfe0f9ff7f7a" name="space_storey_Flow" />
+            </route>
+        </scatter-gather>
+        <foreach doc:name="For each space item" doc:id="03d60fe2-9ad8-474d-acee-a96780d1fa7c" collection="#[vars.spaceStoreyResult]">
+            <ee:transform doc:name="Calculate flaecheTotal" doc:id="5e24a107-3230-4232-9404-4f190e352e31">
+                <ee:message />
+                <ee:variables>
+                    <ee:set-variable variableName="space"><![CDATA[vars.space as Number default 0 + payload.code as Number default 0]]></ee:set-variable>
+                </ee:variables>
+            </ee:transform>
+        </foreach>
+        <ee:transform doc:name="Build response" doc:id="cfd80721-b7d8-49fa-9106-aa6b23e81e8b">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -223,7 +222,18 @@ output application/json
   "name": vars.storeyResult.name as String default "",
   "flaecheTotal": vars.space 
 }]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\windows:usz_raumdaten-config">
+        <flow-ref doc:name="Get All windows" doc:id="3bea61de-058e-4304-8368-92ed2191d058" name="windowsSub_Flow"/>
+		<ee:transform doc:name="Build service result">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
 </mule>
