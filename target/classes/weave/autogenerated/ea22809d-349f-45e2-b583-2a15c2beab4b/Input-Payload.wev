@@ -1,0 +1,10 @@
+%dw 2.0
+
+type auto_ea22809d_349f_45e2_b583_2a15c2beab4b_Input_Payload = {
+  name?: String, 
+  storeyId?: String, 
+  flaecheTotal?: Number, 
+  _?: Any
+} {"description": "schema of a stockwerkFläche",
+"label": "Stockwerkfläche"}
+

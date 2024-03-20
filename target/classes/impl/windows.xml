@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="216f06c2-e255-45cd-8c5b-84d7af407fff" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" database="ADESSO_WJAX_EMPLOYEES" />
+	</db:config>
+	<sub-flow name="windowsSub_Flow" doc:id="4eeb3e87-705b-43d5-8216-9d70a55345e1" >
+		<db:select doc:name="Select" doc:id="2a697566-4866-4db2-80bb-d248491c4058" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT id, name, description, height, width
+FROM windows]]></db:sql>
+		</db:select>
+	</sub-flow>
+</mule>

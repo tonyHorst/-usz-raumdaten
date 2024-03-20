@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="usz_raumdaten-main">
+        <http:listener config-ref="usz_raumdaten-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="usz_raumdaten-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="usz_raumdaten-console">
+        <http:listener config-ref="usz_raumdaten-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="usz_raumdaten-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="get:\buildings:usz_raumdaten-config">
+        <logger level="INFO" message="get:\buildings:usz_raumdaten-config" />
+    </flow>
+    <flow name="get:\sia-416-codes:usz_raumdaten-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    code: "10",
+    display: "Elektro",
+    system: "/sia-416-codes"
+  }, 
+  {
+    code: "11",
+    display: "Sanitaer",
+    system: "/sia-416-codes"
+  }
+] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\sites:usz_raumdaten-config">
+        <logger level="INFO" message="get:\sites:usz_raumdaten-config" />
+    </flow>
+    <flow name="get:\spaces:usz_raumdaten-config">
+        <logger level="INFO" message="get:\spaces:usz_raumdaten-config" />
+    </flow>
+    <flow name="get:\spaces\(id):usz_raumdaten-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="get:\spaces\(id):usz_raumdaten-config" />
+    </flow>
+    <flow name="get:\spaces\(id)\raum:usz_raumdaten-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="get:\spaces\(id)\raum:usz_raumdaten-config" />
+    </flow>
+    <flow name="get:\storeys:usz_raumdaten-config">
+        <logger level="INFO" message="get:\storeys:usz_raumdaten-config" />
+    </flow>
+    <flow name="get:\storeys\(id):usz_raumdaten-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  id: 4008543,
+  name: "Geschoss A",
+  description: "Geschoss A",
+  code: "A",
+  buildingId: 4008537
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\storeys\(id)\flaeche:usz_raumdaten-config">
+        <logger level="INFO" message="get:\storeys\(id)\flaeche:usz_raumdaten-config" />
+        <ee:transform doc:name="Store request event path variables">
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <scatter-gather doc:name="Scatter-Gather" doc:id="ee124c1f-c7eb-4b78-bb48-25b5f4fbe1e6">
+            <route>
+                <flow-ref doc:name="storey_data_request_Flow" doc:id="5e813b9d-423a-4787-93f8-d7dd6e33f6a2" name="storey_data_request_Flow" />
+            </route>
+            <route>
+                <flow-ref doc:name="space_storey_Flow" doc:id="7ee477b7-6f53-4af3-9ee5-dfe0f9ff7f7a" name="space_storey_Flow" />
+            </route>
+        </scatter-gather>
+        <ee:transform doc:name="Define space values array" doc:id="27c5d165-3fdf-4f36-8f95-aa1d7ab9373a" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="spaceArray" ><![CDATA[[]]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<foreach doc:name="For each space item" doc:id="03d60fe2-9ad8-474d-acee-a96780d1fa7c" collection="#[vars.spaceStoreyResult]">
+            <ee:transform doc:name="Calculate flaecheTotal" doc:id="5e24a107-3230-4232-9404-4f190e352e31">
+                <ee:message />
+                <ee:variables>
+					<ee:set-variable variableName="spaceArray" ><![CDATA[vars.spaceArray << payload.code as Number default 0]]></ee:set-variable>
+                </ee:variables>
+            </ee:transform>
+        </foreach>
+        <ee:transform doc:name="Build response" doc:id="cfd80721-b7d8-49fa-9106-aa6b23e81e8b">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "storeyId": vars.id,
+  "name": vars.storeyResult.name as String default "",
+  "flaecheTotal": sum(vars.spaceArray) 
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\windows:usz_raumdaten-config">
+        <flow-ref doc:name="Get All windows" doc:id="3bea61de-058e-4304-8368-92ed2191d058" name="windowsSub_Flow"/>
+		<ee:transform doc:name="Build service result">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+</mule>
