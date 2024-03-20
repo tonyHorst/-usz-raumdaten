@@ -30,7 +30,7 @@ jobs:
       with:
         servers: |
           [{
-            "id": "anypoint-exchange-v3",
+            "id": "MuleRepository",
             "username": "${{ secrets.MAVEN_USERNAME }}",
             "password": "${{ secrets.MAVEN_PASSWORD }}"
           }]
