@@ -204,11 +204,18 @@ output application/json
                 <flow-ref doc:name="space_storey_Flow" doc:id="7ee477b7-6f53-4af3-9ee5-dfe0f9ff7f7a" name="space_storey_Flow" />
             </route>
         </scatter-gather>
-        <foreach doc:name="For each space item" doc:id="03d60fe2-9ad8-474d-acee-a96780d1fa7c" collection="#[vars.spaceStoreyResult]">
+        <ee:transform doc:name="Define space values array" doc:id="27c5d165-3fdf-4f36-8f95-aa1d7ab9373a" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="spaceArray" ><![CDATA[[]]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<foreach doc:name="For each space item" doc:id="03d60fe2-9ad8-474d-acee-a96780d1fa7c" collection="#[vars.spaceStoreyResult]">
             <ee:transform doc:name="Calculate flaecheTotal" doc:id="5e24a107-3230-4232-9404-4f190e352e31">
                 <ee:message />
                 <ee:variables>
-                    <ee:set-variable variableName="space"><![CDATA[vars.space as Number default 0 + payload.code as Number default 0]]></ee:set-variable>
+					<ee:set-variable variableName="spaceArray" ><![CDATA[vars.spaceArray << payload.code as Number default 0]]></ee:set-variable>
                 </ee:variables>
             </ee:transform>
         </foreach>
@@ -220,7 +227,7 @@ output application/json
 {
   "storeyId": vars.id,
   "name": vars.storeyResult.name as String default "",
-  "flaecheTotal": vars.space 
+  "flaecheTotal": sum(vars.spaceArray) 
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
