@@ -37,6 +37,23 @@
 							<artifactId>mysql-connector-java</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<connectedAppClientId>${client.id}</connectedAppClientId>
+						<connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<applicationName>${app.name}</applicationName>
+						<environment>dev</environment>
+						<workerType>MICRO</workerType>
+						<region>us-east-2</region>
+						<workers>1</workers>
+						<objectStoreV2>true</objectStoreV2>
+						<properties>
+							<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
+							<decryption.key>${decryption.key}</decryption.key>
+						</properties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 			<plugin>
