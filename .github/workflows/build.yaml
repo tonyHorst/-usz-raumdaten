@@ -25,50 +25,15 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 8
-    - name: maven-settings-xml-action
-      uses: whelk-io/maven-settings-xml-action@v16
+    - name: Add repo credentials
+      uses: s4u/maven-settings-action@v2.4.0
       with:
-      repositories: |
-                    [
-                      {
-                        "id": "MuleRepository",
-                        "name": "MuleRepository",
-                        "url": "https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/",
-                        "releases": {
-                          "enabled": "true"
-                        },
-                        "snapshots": {
-                          "enabled": "true"
-                        }
-                      }
-                    ]
       servers: |
-                    [
-                      {
-                        "id": "anypoint-exchange-v2",
-                        "username": "${{ secrets.MAVEN_USERNAME }}",
-                        "password": "${{ secrets.MAVEN_PASSWORD }}",
-                        "configuration": {
-                          "httpConfiguration": {
-                            "all": {
-                              "usePreemptive": "true"
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "id": "MuleRepository",
-                        "username": "${{ secrets.ENT_ID }}",
-                        "password": "${{ secrets.ENT_PASSWORD }}",
-                        "configuration": {
-                          "httpConfiguration": {
-                            "all": {
-                              "usePreemptive": "true"
-                            }
-                          }
-                        }
-                      }
-                    ] 
+              [{
+                "id": "mule-enterprise",
+                "username": "${{ secrets.MAVEN_USERNAME }}",
+                "password": "${{ secrets.MAVEN_PASSWORD }}"
+              }]
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Stamp artifact file name with commit hash
