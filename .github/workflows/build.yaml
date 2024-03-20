@@ -26,6 +26,14 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Build with Maven
+      uses: s4u/maven-settings-action@v3.0.0
+      with:
+        servers: |
+          [{
+            "id": "anypoint-exchange-v3",
+            "username": "${{ secrets.MAVEN_USERNAME }}",
+            "password": "${{ secrets.MAVEN_PASSWORD }}"
+          }]
       run: mvn -B package --file pom.xml
     - name: Stamp artifact file name with commit hash
       run: |
