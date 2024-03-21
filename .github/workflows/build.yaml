@@ -28,11 +28,11 @@ jobs:
     - name: Add repo credentials
       uses: s4u/maven-settings-action@v2.4.0
       with:
-      servers: |
+        servers: |
               [{
                 "id": "mule-enterprise",
-                "username": "${{ secrets.MAVEN_USERNAME }}",
-                "password": "${{ secrets.MAVEN_PASSWORD }}"
+                "username": "${{ secrets.ANYPOINT_PLATFORM_USERNAME }}",
+                "password": "${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}"
               }]
     - name: Build with Maven
       run: mvn -B package --file pom.xml
