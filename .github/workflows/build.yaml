@@ -30,9 +30,9 @@ jobs:
       with:
         servers: |
               [{
-                "id": "mule-enterprise",
-                "username": "${{ secrets.ANYPOINT_PLATFORM_USERNAME }}",
-                "password": "${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}"
+                "id": "Repository",
+                "username": "${{ secrets.MAVEN_USERNAME }}",
+                "password": "${{ secrets.MAVEN_PASSWORD }}"
               }]
     - name: Build with Maven
       run: mvn -B package --file pom.xml
