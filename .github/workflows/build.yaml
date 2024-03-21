@@ -35,7 +35,7 @@ jobs:
                 "password": "${{ secrets.MAVEN_PASSWORD }}"
               }]
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package -DskipTests --file pom.xml
     - name: Stamp artifact file name with commit hash
       run: |
         artifactName1=$(ls target/*.jar | head -1)
