@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
     <db:config name="Database_Config" doc:name="Database Config" doc:id="8aea6f86-8706-4e17-a19c-d648ee5c21ec" >
-		<db:my-sql-connection host="0.tcp.eu.ngrok.io" port="12025" user="root" database="ADESSO_WJAX_EMPLOYEES" />
+		<db:my-sql-connection host="0.tcp.eu.ngrok.io" port="10469" user="root" database="ADESSO_WJAX_EMPLOYEES" />
 	</db:config>
     <apikit:config name="usz_raumdaten-config" api="resource::2e4d6899-5dcc-4311-b52a-54749987e6ba:usz_raumdaten:1.0.4:oas:zip:usz_raumdaten.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<api-gateway:autodiscovery apiId="19376276" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1c18d1bf-e7db-42ab-b6bf-35f67c8d1320" flowRef="usz_raumdaten-main" />
