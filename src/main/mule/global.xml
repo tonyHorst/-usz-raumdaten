@@ -18,4 +18,5 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	</db:config>
     <apikit:config name="usz_raumdaten-config" api="resource::2e4d6899-5dcc-4311-b52a-54749987e6ba:usz_raumdaten:1.0.4:oas:zip:usz_raumdaten.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<api-gateway:autodiscovery apiId="19376276" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1c18d1bf-e7db-42ab-b6bf-35f67c8d1320" flowRef="usz_raumdaten-main" />
+	<configuration-properties doc:name="Configuration properties" doc:id="7645872c-4e64-4e45-a07c-4437e89025d2" file="application.properties" />
 </mule>
