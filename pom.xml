@@ -161,6 +161,10 @@
 	      <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/2e4d6899-5dcc-4311-b52a-54749987e6ba/maven</url>
 	      <layout>default</layout>
    	 	</repository>
+   	 	<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
